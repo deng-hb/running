@@ -6,10 +6,8 @@ import com.denghb.running.service.HistoryService;
 import com.denghb.running.service.TaskService;
 import com.denghb.running.utils.MailUtils;
 import com.denghb.running.utils.SpringUtils;
-import com.denghb.running.utils.TaskManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sun.net.www.http.HttpClient;
 
 import javax.net.ssl.*;
 import java.io.*;
@@ -17,9 +15,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.cert.X509Certificate;
 import java.util.Date;
-import java.util.Map;
 import java.util.TimerTask;
-import java.util.zip.GZIPInputStream;
 
 /**
  * Created by denghb on 16/9/3.
