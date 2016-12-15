@@ -35,7 +35,7 @@ public class HttpConnectionTask extends TimerTask {
         log.info(String.format("run task:%d", task.getId()));
 
         Date startDate = new Date();
-        int code = 0;
+        int code = 500;
         String text = null;
 
         try {

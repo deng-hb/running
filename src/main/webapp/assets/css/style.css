@@ -27,10 +27,14 @@ a{
 .success{
     background-color: #66CC99;
     color:#fff;
+    padding:3px;
+    border-radius:2px;
 }
 .warning{
     background-color: #FFFFCC;
     color:#CC0033;
+    padding:3px;
+    border-radius:2px;
 }
 
 .red{

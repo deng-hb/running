@@ -6,7 +6,7 @@
   <title>Dashboard</title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <link rel="stylesheet" type="text/css" href="/assets/iconfont/iconfont.css" />
-  <link rel='stylesheet' href='/assets/css/style.css?v=2' type='text/css'/>
+  <link rel='stylesheet' href='/assets/css/style.css?v=4' type='text/css'/>
   <style>
       table{
           border-collapse: collapse;
@@ -91,7 +91,8 @@
             }
         }
         setTimeout(function(){
-            window.location.href = '/';
+            //window.location.href = '/';
+            window.location.reload();
         },4000);
      </script>
 </body>
