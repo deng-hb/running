@@ -51,7 +51,7 @@
               <th>Desc</th>
               <th>Sec</th>
               <th style="width: 45%">URL</th>
-              <th style="width: 10%;font-size:20px;">Run Time(ms)</th>
+              <th style="width: 10%;">Run Time</th>
               <th style="width: 5%">Status</th>
               <th style="width: 15%">Control</th>
             </tr>
@@ -59,9 +59,9 @@
             <tr class="${status.index%2==0?'ood':''}">
               <td>${status.index+1}.</td>
               <td>${item.desc}</td>
-              <td>${item.sec}</td>
+              <td>${item.sec}s</td>
               <td>${item.url}</td>
-              <td>${item.runTime}</td>
+              <td>${item.runTime}ms</td>
               <td><code class=" ${200==item.lastStatus?'success':'warning'}" >${item.lastStatus}</code></td>
               <td>
               <c:choose>
