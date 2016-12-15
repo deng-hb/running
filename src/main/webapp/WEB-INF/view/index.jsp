@@ -5,7 +5,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Dashboard</title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <link rel='stylesheet' href='/assets/css/style.css' type='text/css'/>
+  <link rel="stylesheet" type="text/css" href="/assets/iconfont/iconfont.css" />
+  <link rel='stylesheet' href='/assets/css/style.css?v=2' type='text/css'/>
   <style>
       table{
           border-collapse: collapse;
@@ -27,20 +28,32 @@
       .ood{
         background:#efefef;
       }
+      td a{
+        color:#333;
+        text-decoration:none;
+      }
+      .action{
+          float:right;
+          font-size:15px;
+          margin-right:10px;
+      }
   </style>
 </head>
 <body>
     <div class="header">
         <a href="/">Health Listener</a>
+
+        <div class="action"><a href="/add"><i class="iconfont icon-add blue"></i>add</a></div>
     </div>
           <table class="table">
             <tr>
-              <th style="width: 20px">#</th>
-              <th>Task</th>
+              <th style="width: 5%">#</th>
+              <th>Desc</th>
               <th>Sec</th>
-              <th>URL</th>
-              <th>Status</th>
-              <th>Control</th>
+              <th style="width: 45%">URL</th>
+              <th style="width: 10%;font-size:20px;">Run Time(ms)</th>
+              <th style="width: 5%">Status</th>
+              <th style="width: 15%">Control</th>
             </tr>
             <c:forEach items="${list}" var="item" varStatus="status">
             <tr class="${status.index%2==0?'ood':''}">
@@ -48,17 +61,19 @@
               <td>${item.desc}</td>
               <td>${item.sec}</td>
               <td>${item.url}</td>
+              <td>${item.runTime}</td>
               <td><code class=" ${200==item.lastStatus?'success':'warning'}" >${item.lastStatus}</code></td>
               <td>
               <c:choose>
                   <c:when test="${1 == item.isRun}">
-                    <a href="#" onclick="stop('${item.id}')" task-id="${item.id}" class='task-stop'>stop</a>
+                    <a href="#" onclick="stop('${item.id}')" class="" title="stop"><i class="iconfont icon-stop red"></i>stop</a>
                   </c:when>
                   <c:otherwise>
-                    <a href="#" onclick="start('${item.id}')" class='success'>run</a>
+                    <a href="#" onclick="start('${item.id}')" class="" title="start"><i class="iconfont icon-start green"></i>start</a>
                   </c:otherwise>
               </c:choose>
-              <a href="/edit/${item.id}" >edit</a>
+              <a href="/edit/${item.id}" ><i class="iconfont icon-edit blue"></i>edit</a>
+              <a href="/history/${item.id}" ><i class="iconfont icon-history gray"></i>history</a>
               </td>
             </tr>
             </c:forEach>
@@ -66,15 +81,18 @@
           </table>
     <script>
         function stop(id){
-            if(confirm("确认停止？")){
+            if(confirm("stop it ？")){
                 window.location.href = '/stop/'+id;
             }
         }
         function start(id){
-            if(confirm("确认启动？")){
+            if(confirm("start it ？")){
                 window.location.href = '/start/'+id;
             }
         }
+        setTimeout(function(){
+            window.location.href = '/';
+        },4000);
      </script>
 </body>
 </html>

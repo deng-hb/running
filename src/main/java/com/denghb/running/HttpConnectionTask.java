@@ -32,7 +32,7 @@ public class HttpConnectionTask extends TimerTask {
 
     @Override
     public void run() {
-        log.info(String.format("run task:%d",task.getId()));
+        log.info(String.format("run task:%d", task.getId()));
 
         Date startDate = new Date();
         int code = 0;
@@ -51,15 +51,22 @@ public class HttpConnectionTask extends TimerTask {
         } catch (Exception e) {
             log.debug(e.getMessage(), e);
 
+            // 获取堆栈信息
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             e.printStackTrace(pw);
-            text =sw.toString();
+            text = sw.toString();
 
         } finally {
 
+            // 更新最新状态
+            TaskService taskService = SpringUtils.getBean(TaskService.class);
+            task.setLastStatus(code);
+            task.setRunTime((int) (System.currentTimeMillis() - startDate.getTime()));
+            taskService.update(task);
+
             // 发生错误生成纪录
-            if(200 != code || null != text) {
+            if (200 != code || null != text) {
                 HistoryService historyService = SpringUtils.getBean(HistoryService.class);
 
                 History history = new History();
@@ -74,16 +81,11 @@ public class HttpConnectionTask extends TimerTask {
                 history.setEndTime(new Date());
                 historyService.create(history);
 
-                if(1 == task.getIsMail()) {
+                if (1 == task.getIsEmail()) {
                     // 发邮件
-                    MailUtils.send(task.getMailAddress(), task.getDesc(), String.format("<pre>%s</pre>", text));
+                    MailUtils.send(task.getEmailAddress(), task.getDesc(), String.format("<pre>%s</pre>", text));
                 }
             }
-
-            // 更新最新状态
-            TaskService taskService = SpringUtils.getBean(TaskService.class);
-            task.setLastStatus(code);
-            taskService.update(task);
         }
 
 

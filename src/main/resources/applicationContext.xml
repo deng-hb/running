@@ -58,7 +58,7 @@
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 
-	<bean id="dbHelper" class="com.denghb.dbhelper.DbHelper">
+	<bean id="dbHelper" class="com.denghb.dbhelper.impl.DbHelperImpl">
 		<property name="jdbcTemplate" ref="jdbcTemplate"/>
 	</bean>
 

@@ -1,31 +1,47 @@
 html,body{
-        margin:0;
-        padding:0;
-        border:0;
-    }
-    body{
-        background: #f9f9f9;
-        overflow: scroll;
-        overflow-x: hidden;
-    }
-    .header{
-        height:40px;
-        background:#48525e;
-        font-size:20px;
-        color:#fff;
-        line-height:40px;
-    }
-    .header a{
-        color:#fff;
-    }
+    margin:0;
+    padding:0;
+    border:0;
+}
+body{
+    background: #f9f9f9;
+    overflow: scroll;
+    overflow-x: hidden;
+}
+a{
+    text-decoration:none;
+    color:#333;
+}
+.header{
+    height:40px;
+    background:#48525e;
+    font-size:20px;
+    color:#fff;
+    line-height:40px;
+}
+.header a{
+    color:#fff;
+}
 
 
-    .success{
-        background-color: #66CC99;
-    }
-    .warning{
-        background-color: #FFFFCC;
-    }
-    .warning{
-        background-color: #FFFFCC;
-    }
+.success{
+    background-color: #66CC99;
+    color:#fff;
+}
+.warning{
+    background-color: #FFFFCC;
+    color:#CC0033;
+}
+
+.red{
+    color:#CC0033;
+}
+.green{
+    color:#009966;
+}
+.blue{
+    color:#0099CC;
+}
+.gray{
+    color:#666666;
+}

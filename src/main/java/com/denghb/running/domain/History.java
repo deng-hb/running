@@ -4,8 +4,6 @@ import com.denghb.dbhelper.annotation.Column;
 import com.denghb.dbhelper.annotation.Id;
 import com.denghb.dbhelper.annotation.Table;
 
-import java.util.Date;
-
 /**
  * 任务纪录
  * DDL
@@ -25,9 +23,9 @@ import java.util.Date;
   `version` int(11) NOT NULL DEFAULT '1' COMMENT '版本',
   PRIMARY KEY (`id`),
   KEY `idx_deleted` (`deleted`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='任务纪录'<pre>
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8 COMMENT='任务纪录'<pre>
  * @author DbHelper
- * @generateTime Sat Sep 03 20:45:28 CST 2016
+ * @generateTime Thu Dec 15 23:11:35 CST 2016
  */
 @Table(name="history",database="running")
 public class History implements java.io.Serializable {
@@ -56,11 +54,11 @@ public class History implements java.io.Serializable {
 	
 	/** 开始时间 */
 	@Column(name="start_time")
-	private Date startTime;
+	private java.util.Date startTime;
 	
 	/** 结束时间 */
 	@Column(name="end_time")
-	private Date endTime;
+	private java.util.Date endTime;
 	
 	/** 创建人 */
 	@Column(name="created_by")
@@ -68,7 +66,7 @@ public class History implements java.io.Serializable {
 	
 	/** 创建时间 */
 	@Column(name="created_time")
-	private Date createdTime;
+	private java.util.Date createdTime;
 	
 	/** 更新人 */
 	@Column(name="updated_by")
@@ -76,7 +74,7 @@ public class History implements java.io.Serializable {
 	
 	/** 更新时间 */
 	@Column(name="updated_time")
-	private Date updatedTime;
+	private java.util.Date updatedTime;
 	
 	/** 删除标记 */
 	@Column(name="deleted")
@@ -127,19 +125,19 @@ public class History implements java.io.Serializable {
 		this.responseText = responseText;
 	}
 
-	public Date getStartTime(){
+	public java.util.Date getStartTime(){
 		return startTime;
 	}
 
-	public void setStartTime(Date startTime){
+	public void setStartTime(java.util.Date startTime){
 		this.startTime = startTime;
 	}
 
-	public Date getEndTime(){
+	public java.util.Date getEndTime(){
 		return endTime;
 	}
 
-	public void setEndTime(Date endTime){
+	public void setEndTime(java.util.Date endTime){
 		this.endTime = endTime;
 	}
 
@@ -151,11 +149,11 @@ public class History implements java.io.Serializable {
 		this.createdBy = createdBy;
 	}
 
-	public Date getCreatedTime(){
+	public java.util.Date getCreatedTime(){
 		return createdTime;
 	}
 
-	public void setCreatedTime(Date createdTime){
+	public void setCreatedTime(java.util.Date createdTime){
 		this.createdTime = createdTime;
 	}
 
@@ -167,11 +165,11 @@ public class History implements java.io.Serializable {
 		this.updatedBy = updatedBy;
 	}
 
-	public Date getUpdatedTime(){
+	public java.util.Date getUpdatedTime(){
 		return updatedTime;
 	}
 
-	public void setUpdatedTime(Date updatedTime){
+	public void setUpdatedTime(java.util.Date updatedTime){
 		this.updatedTime = updatedTime;
 	}
 

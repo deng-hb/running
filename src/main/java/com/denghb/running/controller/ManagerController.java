@@ -82,18 +82,28 @@ public class ManagerController {
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public String save(Task task, Model model) {
-        if(null == task){
+        if (null == task) {
             model.addAttribute("message", "ERROR");
             return "edit";
         }
-        if(null != task.getId()){
-            taskService.update(task);
-            model.addAttribute("message", "UPDATE SUCCESS");
-        }else{
-            taskService.create(task);
-            model.addAttribute("message", "CREATE SUCCESS");
+        try {
+            if (null != task.getId()) {
+                taskService.update(task);
+                model.addAttribute("message", "UPDATE SUCCESS");
+            } else {
+                taskService.create(task);
+                model.addAttribute("message", "CREATE SUCCESS");
+            }
+            // 运行
+            if(1 == task.getIsRun()){
+                startTask(task);
+            }else{
+                TaskUtils.stop(String.valueOf(task.getId()));
+            }
+        } catch (Exception e) {
+            log.error("ERROR", e);
         }
-        return "edit";
+        return "redirect:/edit/"+task.getId();
     }
 
     @PostConstruct
