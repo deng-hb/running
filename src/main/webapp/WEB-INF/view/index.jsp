@@ -6,6 +6,7 @@
   <title>Dashboard</title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <link rel="stylesheet" type="text/css" href="/assets/iconfont/iconfont.css" />
+  <link rel="shortcut icon" href="https://denghb.com/usr/themes/default/img/favicon.ico" />
   <link rel='stylesheet' href='/assets/css/style.css?v=4' type='text/css'/>
   <style>
       table{
@@ -37,6 +38,9 @@
           font-size:15px;
           margin-right:10px;
       }
+      .stop a{
+        text-decoration:line-through;
+      }
   </style>
 </head>
 <body>
@@ -50,30 +54,30 @@
               <th style="width: 5%">#</th>
               <th>Desc</th>
               <th>Sec</th>
-              <th style="width: 45%">URL</th>
-              <th style="width: 10%;">Run Time</th>
-              <th style="width: 5%">Status</th>
+              <th style="width: 40%">URL</th>
+              <th style="width: 15%;">Run Time</th>
+              <th style="width: 8%">Status</th>
               <th style="width: 15%">Control</th>
             </tr>
-            <c:forEach items="${list}" var="item" varStatus="status">
+            <c:forEach items="${list}" var="task" varStatus="status">
             <tr class="${status.index%2==0?'ood':''}">
               <td>${status.index+1}.</td>
-              <td>${item.desc}</td>
-              <td>${item.sec}s</td>
-              <td>${item.url}</td>
-              <td>${item.runTime}ms</td>
-              <td><code class=" ${200==item.lastStatus?'success':'warning'}" >${item.lastStatus}</code></td>
+              <td>${task.desc}</td>
+              <td>${task.sec}s</td>
+              <td class="${1 == task.isRun?'':'stop'}"><a href="${task.url}" target="_blank">${task.url}</a></td>
+              <td><code class=" ${1000 < task.runTime?'red':'green'}" >${task.runTime}ms</code></td>
+              <td><code class=" ${200 == task.lastStatus?'success':'warning'}" >${task.lastStatus}</code></td>
               <td>
               <c:choose>
-                  <c:when test="${1 == item.isRun}">
-                    <a href="#" onclick="stop('${item.id}')" class="" title="stop"><i class="iconfont icon-stop red"></i>stop</a>
+                  <c:when test="${1 == task.isRun}">
+                    <a href="#" onclick="stop('${task.id}')" class="" title="stop"><i class="iconfont icon-stop red"></i>stop</a>
                   </c:when>
                   <c:otherwise>
-                    <a href="#" onclick="start('${item.id}')" class="" title="start"><i class="iconfont icon-start green"></i>start</a>
+                    <a href="#" onclick="start('${task.id}')" class="" title="start"><i class="iconfont icon-start green"></i>start</a>
                   </c:otherwise>
               </c:choose>
-              <a href="/edit/${item.id}" ><i class="iconfont icon-edit blue"></i>edit</a>
-              <a href="/history/${item.id}" ><i class="iconfont icon-history gray"></i>history</a>
+              <a href="/edit/${task.id}" ><i class="iconfont icon-edit blue"></i>edit</a>
+              <a href="/history/${task.id}" ><i class="iconfont icon-history gray"></i>history</a>
               </td>
             </tr>
             </c:forEach>
@@ -93,7 +97,7 @@
         setTimeout(function(){
             //window.location.href = '/';
             window.location.reload();
-        },4000);
+        },30*1000);
      </script>
 </body>
 </html>

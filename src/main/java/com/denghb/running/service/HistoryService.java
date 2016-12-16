@@ -1,5 +1,7 @@
 package com.denghb.running.service;
 
+import com.denghb.dbhelper.paging.Paging;
+import com.denghb.dbhelper.paging.PagingResult;
 import com.denghb.running.domain.History;
 
 /**
@@ -8,5 +10,5 @@ import com.denghb.running.domain.History;
 public interface HistoryService {
     void create(History history);
 
-
+    PagingResult<History> list(Paging paging);
 }

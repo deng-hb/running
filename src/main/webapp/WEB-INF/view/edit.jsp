@@ -57,7 +57,7 @@
             </tr>
             <tr>
                 <td align="right">Sec：</td>
-                <td><input class="field" type="text" name="sec" value="${task.sec}"/></td>
+                <td><input class="field" type="number" name="sec" value="${task.sec}"/></td>
             </tr>
             <tr>
                 <td align="right">is Email：</td>

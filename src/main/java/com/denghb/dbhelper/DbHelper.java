@@ -1,18 +1,9 @@
 package com.denghb.dbhelper;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import com.denghb.dbhelper.annotation.Column;
-import com.denghb.dbhelper.utils.DbHelperUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
-
-import com.denghb.dbhelper.annotation.Id;
+import com.denghb.dbhelper.paging.Paging;
+import com.denghb.dbhelper.paging.PagingResult;
 
 /**
  * <pre>
@@ -32,6 +23,7 @@ public interface DbHelper {
      * @return
      */
     public boolean insert(Object object);
+
     /**
      * 更新一条纪录
      *
@@ -39,6 +31,7 @@ public interface DbHelper {
      * @return
      */
     public boolean updateById(Object object);
+
     /**
      * 执行一条SQL
      *
@@ -50,33 +43,6 @@ public interface DbHelper {
 
     /**
      * 查询列表
-     * <p>
-     * <p>
-     * <pre>
-     *
-     * Example
-     *
-     * Bean:
-     * public class User implements Serializable {
-     *
-     * 	private String name;
-     *
-     * 	public String getName() {
-     * 		return name;
-     *    }
-     *
-     * 	public void setName(String name) {
-     * 		this.name = name;
-     *    }
-     * }
-     *
-     * SQL:
-     * select c_name_v as name from user;
-     *
-     * 只要是列名和对象字段名一致就能反射赋值
-     *
-     * @see {@link org.springframework.jdbc.core.BeanPropertyRowMapper}
-     * </pre>
      *
      * @param sql
      * @param clazz
@@ -84,6 +50,18 @@ public interface DbHelper {
      * @return
      */
     public <T> List<T> list(String sql, Class<T> clazz, Object... args);
+
+
+    /**
+     * 查询并分页
+     *
+     * @param sql
+     * @param clazz
+     * @param paging
+     * @param <T>
+     * @return
+     */
+    public <T> PagingResult<T> list(StringBuffer sql, Class<T> clazz, Paging paging);
 
     /**
      * 指定参数查询返回对象
@@ -94,6 +72,7 @@ public interface DbHelper {
      * @return
      */
     public <T> T queryForObject(String sql, Class<T> clazz, Object... args);
+
     /**
      * 查询一条纪录
      *
@@ -102,6 +81,7 @@ public interface DbHelper {
      * @return
      */
     public <T> T queryById(Class<T> clazz, Object id);
+
     /**
      * 删除
      *
