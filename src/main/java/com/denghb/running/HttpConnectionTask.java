@@ -6,6 +6,7 @@ import com.denghb.running.service.HistoryService;
 import com.denghb.running.service.TaskService;
 import com.denghb.running.utils.MailUtils;
 import com.denghb.running.utils.SpringUtils;
+import org.apache.taglibs.standard.tag.common.core.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,26 +45,23 @@ public class HttpConnectionTask extends TimerTask {
             connection.connect();
             code = connection.getResponseCode();
 
-            if (200 != code) {
-                text = getResponseBody(connection);
+            if (200 > code || 299 < code) {
+                text = getResponseError(connection);
             }
 
         } catch (Exception e) {
             log.debug(e.getMessage(), e);
 
             // 获取堆栈信息
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            e.printStackTrace(pw);
-            text = sw.toString();
+            if (null == text) {
+                StringWriter sw = new StringWriter();
+                PrintWriter pw = new PrintWriter(sw);
+                e.printStackTrace(pw);
+                text = sw.toString();
+            }
 
         } finally {
 
-            // 更新最新状态
-            TaskService taskService = SpringUtils.getBean(TaskService.class);
-            task.setLastStatus(code);
-            task.setRunTime((int) (System.currentTimeMillis() - startDate.getTime()));
-            taskService.update(task);
 
             // 发生错误生成纪录
             if (200 != code || null != text) {
@@ -73,28 +71,58 @@ public class HttpConnectionTask extends TimerTask {
                 history.setTaskId(task.getId());
                 history.setTaskUrl(task.getUrl());
 
-                history.setResponseCode(code);
-                history.setResponseText(text);
+                // 获取第一行
+                String line1 = null;
+                int i = text.indexOf("\n");
+                if (0 < i) {
+                    line1 = text.substring(0, i);
+                } else {
+                    line1 = text;
+                }
+
+                // 编码
+                line1 = Util.escapeXml(line1);
+                int len = line1.length();
+                history.setResponseBrief(line1.substring(0, 100 > len ? len : 100));
+
+                history.setCode(code);
+                history.setResponse(text);
                 history.setCreatedBy(0);
 
                 history.setStartTime(startDate);
                 history.setEndTime(new Date());
                 historyService.create(history);
 
-                if (1 == task.getIsEmail()) {
+                if (0 < task.getEmailSize()) {
+                    String content = text;
+                    if(0 > text.indexOf("<html")){
+                        // 不是网页
+                        content = String.format("<pre>%s</pre>");
+                    }
+
                     // 发邮件
-                    MailUtils.send(task.getEmailAddress(), task.getDesc(), String.format("<pre>%s</pre>", text));
+                    MailUtils.send(task.getEmailAddress(), String.format("[Running](%s)>%s", code, task.getDesc()), content);
+                    task.setEmailSize(task.getEmailSize() - 1);
                 }
             }
+
+            // 更新最新状态
+            TaskService taskService = SpringUtils.getBean(TaskService.class);
+            task.setLastStatus(code);
+            task.setRunTime((int) (System.currentTimeMillis() - startDate.getTime()));
+            taskService.update(task);
         }
 
 
     }
 
-    private String getResponseBody(HttpURLConnection connection) throws IOException {
+    private String getResponseError(HttpURLConnection connection) throws IOException {
 
+        // 200
+        // InputStream inputStream = connection.getInputStream();
 
-        InputStream inputStream = connection.getInputStream();
+        InputStream inputStream = connection.getErrorStream();
+
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
         StringBuilder builder = new StringBuilder();
@@ -120,7 +148,7 @@ public class HttpConnectionTask extends TimerTask {
         connection.setDoOutput(true);
         connection.setDoInput(true);
         connection.setUseCaches(false);
-        // 请求头
+        // TODO 将来可以设定不同浏览器user-agent来模拟请求
         connection.setRequestProperty("Connection", "Keep-Alive");
         connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36");
         connection.setRequestProperty("Charset", "UTF-8");

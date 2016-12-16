@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -51,7 +50,7 @@ public class ManagerController {
     }
 
     @RequestMapping(value = "/stop/{id}")
-    public String stop(@PathVariable int id) {
+    public String stop(@PathVariable long id) {
         TaskUtils.stop(String.valueOf(id));
 
         Task task = new Task();
@@ -74,7 +73,7 @@ public class ManagerController {
     }
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
-    public String edit(@PathVariable int id, Model model) {
+    public String edit(@PathVariable long id, Model model) {
         Task task = taskService.query(id);
         model.addAttribute("task", task);
         return "edit";

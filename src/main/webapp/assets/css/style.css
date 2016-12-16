@@ -22,6 +22,11 @@ a{
 .header a{
     color:#fff;
 }
+.header-add{
+  float:right;
+  font-size:15px;
+  margin-right:10px;
+}
 
 
 .success{
@@ -48,4 +53,26 @@ a{
 }
 .gray{
     color:#666666;
+}
+
+.page i {
+	border: 0;
+	background: 0 0;
+	margin: 0;
+	padding: 0 4px;
+}
+
+.page a {
+	color: #333;
+	width: 30px;
+	border: 0;
+	border: 1px solid #fff;
+	background-color: #fff;
+	margin: 0;
+	padding: 5px 8px;
+	text-decoration: none;
+}
+
+.page a:hover {
+	border: 1px solid #ddd;
 }

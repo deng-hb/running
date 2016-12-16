@@ -10,122 +10,153 @@ import java.util.List;
  */
 public abstract class Paging implements Serializable {
 
-	private static final long serialVersionUID = 1760699317506200256L;
+    private static final long serialVersionUID = 1760699317506200256L;
 
-	/** 总数 */
-	private long total = 0;
+    /**
+     * 总数
+     */
+    private long total = 0;
 
-	/** 当前页数 */
-	private long page = 1;
+    /**
+     * 当前页数
+     */
+    private long page = 1;
 
-	/** 每页数量 */
-	private long rows = 20;
+    /**
+     * 每页数量
+     */
+    private long rows = 20;
 
-	/** 总页数 */
-	private long totalPage = 1;
+    /**
+     * 总页数
+     */
+    private long totalPage = 1;
 
-	/** 是否排序 */
-	private boolean isSort = false;
+    /**
+     * 开始
+     */
+    private long start = 0;
 
-	/** 排序字段 */
-	private String[] sorts;
+    /**
+     * 是否排序
+     */
+    private boolean isSort = true;
 
-	/** 排序字段下标 默认：0 */
-	private int sortIndex = 0;
+    /**
+     * 排序字段
+     */
+    private String[] sorts;
 
-	/** 默认降序 */
-	private boolean desc = true;
+    /**
+     * 排序字段下标 默认：0
+     */
+    private int sortIndex = 0;
 
-	/** 参数列表 */
-	private List<Object> params = new ArrayList<Object>();
+    /**
+     * 默认降序
+     */
+    private boolean desc = true;
 
-	public long getTotal() {
-		return total;
-	}
+    /**
+     * 参数列表
+     */
+    private List<Object> params = new ArrayList<Object>();
 
-	public void setTotal(long total) {
-		this.total = total;
+    public long getTotal() {
+        return total;
+    }
 
-		if (0 != total && 0 != rows) {
-			totalPage = total / rows;
-			if (total % rows != 0) {
-				totalPage++;
-			}
-		}
+    public void setTotal(long total) {
+        this.total = total;
 
-	}
+        if (0 != total && 0 != rows) {
+            totalPage = total / rows;
+            if (total % rows != 0) {
+                totalPage++;
+            }
+        }
 
-	public long getPage() {
-		return page;
-	}
+    }
 
-	public void setPage(long page) {
-		this.page = page;
-	}
+    public long getPage() {
+        return page;
+    }
 
-	public long getRows() {
-		return rows;
-	}
+    public void setPage(long page) {
+        this.page = page;
+    }
 
-	public void setRows(long rows) {
-		this.rows = rows;
-	}
+    public long getRows() {
+        return rows;
+    }
 
-	public long getTotalPage() {
-		return totalPage;
-	}
+    public void setRows(long rows) {
+        this.rows = rows;
+    }
 
-	public void setTotalPage(long totalPage) {
-		this.totalPage = totalPage;
-	}
+    public long getTotalPage() {
+        return totalPage;
+    }
 
-	/**
-	 * 设置需要排序的字段
-	 * 
-	 * @return
-	 */
-	public abstract String[] getSorts();
+    public void setTotalPage(long totalPage) {
+        this.totalPage = totalPage;
+    }
 
-	public void setSorts(String[] sorts) {
-		this.sorts = sorts;
-	}
+    /**
+     * 设置需要排序的字段
+     *
+     * @return
+     */
+    public abstract String[] getSorts();
 
-	public boolean isDesc() {
-		return desc;
-	}
+    public void setSorts(String[] sorts) {
+        this.sorts = sorts;
+    }
 
-	public void setDesc(boolean desc) {
-		this.desc = desc;
-	}
+    public boolean isDesc() {
+        return desc;
+    }
 
-	public List<Object> getParams() {
-		return params;
-	}
+    public void setDesc(boolean desc) {
+        this.desc = desc;
+    }
 
-	public void setParams(List<Object> params) {
-		this.params = params;
-	}
+    public List<Object> getParams() {
+        return params;
+    }
 
-	public boolean isSort() {
-		return isSort;
-	}
+    public void setParams(List<Object> params) {
+        this.params = params;
+    }
 
-	public void setSort(boolean isSort) {
-		this.isSort = isSort;
-	}
+    public boolean isSort() {
+        return isSort;
+    }
 
-	public int getSortIndex() {
-		return sortIndex;
-	}
+    public void setSort(boolean isSort) {
+        this.isSort = isSort;
+    }
 
-	public void setSortIndex(int sortIndex) {
-		this.sortIndex = sortIndex;
-	}
+    public int getSortIndex() {
+        return sortIndex;
+    }
 
-	@Override
-	public String toString() {
-		return "Paging [total=" + total + ", page=" + page + ", rows=" + rows + ", totalPage=" + totalPage + ", sorts="
-				+ Arrays.toString(sorts) + ", desc=" + desc + ", params=" + params + "]";
-	}
+    public void setSortIndex(int sortIndex) {
+        this.sortIndex = sortIndex;
+    }
+
+    public long getStart() {
+        return (page - 1) * rows;
+    }
+
+    public void setStart(long start) {
+        this.start = start;
+    }
+
+    @Override
+    public String toString() {
+        return "Paging [total=" + total + ", page=" + page + ", rows=" + rows + ", totalPage=" + totalPage + ", sorts="
+                + Arrays.toString(sorts) + ", desc=" + desc + ", params=" + params + "]";
+    }
 
 }

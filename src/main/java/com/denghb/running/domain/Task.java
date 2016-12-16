@@ -7,17 +7,20 @@ import com.denghb.dbhelper.annotation.Table;
 /**
  * 任务
  * DDL
- * <pre>CREATE TABLE `task` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+ * 
+ <pre>
+CREATE TABLE `task` (
+  `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT,
+  `desc` varchar(100) DEFAULT NULL COMMENT '描述',
   `url` varchar(200) NOT NULL DEFAULT '' COMMENT '链接',
-  `sec` int(11) NOT NULL COMMENT '间隔秒',
-  `last_status` int(11) NOT NULL COMMENT '最近状态',
+  `sec` int(11) NOT NULL COMMENT '轮询间隔秒',
+  `last_status` int(11) NOT NULL DEFAULT '0' COMMENT '最近状态',
   `is_run` int(11) DEFAULT '1' COMMENT '是否运行',
   `run_time` int(11) DEFAULT '0' COMMENT '运行毫秒',
-  `desc` varchar(100) DEFAULT NULL COMMENT '描述',
-  `is_email` int(11) DEFAULT '0' COMMENT '是否发邮件',
+  `error_size` int(11) NOT NULL DEFAULT '200' COMMENT '错误次数',
+  `email_size` int(11) DEFAULT '0' COMMENT '发邮件次数，0>=不发',
   `email_address` varchar(200) DEFAULT NULL COMMENT '邮件地址多个,隔开',
-  `created_by` int(11) NOT NULL COMMENT '创建人',
+  `created_by` int(11) NOT NULL DEFAULT '0' COMMENT '创建人',
   `created_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_by` int(11) DEFAULT NULL COMMENT '更新人',
   `updated_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
@@ -25,9 +28,10 @@ import com.denghb.dbhelper.annotation.Table;
   `version` int(11) NOT NULL DEFAULT '1' COMMENT '版本',
   PRIMARY KEY (`id`),
   KEY `idx_deleted` (`deleted`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='任务'<pre>
+) ENGINE=InnoDB AUTO_INCREMENT=1314 DEFAULT CHARSET=utf8 COMMENT='任务'
+ <pre>
  * @author DbHelper
- * @generateTime Thu Dec 15 23:11:35 CST 2016
+ * @generateTime Fri Dec 16 20:35:09 CST 2016
  */
 @Table(name="task",database="running")
 public class Task implements java.io.Serializable {
@@ -36,13 +40,17 @@ public class Task implements java.io.Serializable {
 	
 	/**  */
 	@Id@Column(name="id")
-	private Integer id;
+	private Long id;
+	
+	/** 描述 */
+	@Column(name="desc")
+	private String desc;
 	
 	/** 链接 */
 	@Column(name="url")
 	private String url;
 	
-	/** 间隔秒 */
+	/** 轮询间隔秒 */
 	@Column(name="sec")
 	private Integer sec;
 	
@@ -58,13 +66,13 @@ public class Task implements java.io.Serializable {
 	@Column(name="run_time")
 	private Integer runTime;
 	
-	/** 描述 */
-	@Column(name="desc")
-	private String desc;
+	/** 错误次数 */
+	@Column(name="error_size")
+	private Integer errorSize;
 	
-	/** 是否发邮件 */
-	@Column(name="is_email")
-	private Integer isEmail;
+	/** 发邮件次数，0>=不发 */
+	@Column(name="email_size")
+	private Integer emailSize;
 	
 	/** 邮件地址多个,隔开 */
 	@Column(name="email_address")
@@ -95,12 +103,20 @@ public class Task implements java.io.Serializable {
 	private Integer version;
 	
 
-	public Integer getId(){
+	public Long getId(){
 		return id;
 	}
 
-	public void setId(Integer id){
+	public void setId(Long id){
 		this.id = id;
+	}
+
+	public String getDesc(){
+		return desc;
+	}
+
+	public void setDesc(String desc){
+		this.desc = desc;
 	}
 
 	public String getUrl(){
@@ -143,20 +159,20 @@ public class Task implements java.io.Serializable {
 		this.runTime = runTime;
 	}
 
-	public String getDesc(){
-		return desc;
+	public Integer getErrorSize(){
+		return errorSize;
 	}
 
-	public void setDesc(String desc){
-		this.desc = desc;
+	public void setErrorSize(Integer errorSize){
+		this.errorSize = errorSize;
 	}
 
-	public Integer getIsEmail(){
-		return isEmail;
+	public Integer getEmailSize(){
+		return emailSize;
 	}
 
-	public void setIsEmail(Integer isEmail){
-		this.isEmail = isEmail;
+	public void setEmailSize(Integer emailSize){
+		this.emailSize = emailSize;
 	}
 
 	public String getEmailAddress(){
@@ -217,54 +233,41 @@ public class Task implements java.io.Serializable {
 
 	@Override
 	public String toString(){
-		StringBuffer stringBuffer = new StringBuffer("Task [");
-		stringBuffer.append("id=");
-		stringBuffer.append(id);
-		stringBuffer.append(",");
-		stringBuffer.append("url=");
-		stringBuffer.append(url);
-		stringBuffer.append(",");
-		stringBuffer.append("sec=");
-		stringBuffer.append(sec);
-		stringBuffer.append(",");
-		stringBuffer.append("lastStatus=");
-		stringBuffer.append(lastStatus);
-		stringBuffer.append(",");
-		stringBuffer.append("isRun=");
-		stringBuffer.append(isRun);
-		stringBuffer.append(",");
-		stringBuffer.append("runTime=");
-		stringBuffer.append(runTime);
-		stringBuffer.append(",");
-		stringBuffer.append("desc=");
-		stringBuffer.append(desc);
-		stringBuffer.append(",");
-		stringBuffer.append("isEmail=");
-		stringBuffer.append(isEmail);
-		stringBuffer.append(",");
-		stringBuffer.append("emailAddress=");
-		stringBuffer.append(emailAddress);
-		stringBuffer.append(",");
-		stringBuffer.append("createdBy=");
-		stringBuffer.append(createdBy);
-		stringBuffer.append(",");
-		stringBuffer.append("createdTime=");
-		stringBuffer.append(createdTime);
-		stringBuffer.append(",");
-		stringBuffer.append("updatedBy=");
-		stringBuffer.append(updatedBy);
-		stringBuffer.append(",");
-		stringBuffer.append("updatedTime=");
-		stringBuffer.append(updatedTime);
-		stringBuffer.append(",");
-		stringBuffer.append("deleted=");
-		stringBuffer.append(deleted);
-		stringBuffer.append(",");
-		stringBuffer.append("version=");
-		stringBuffer.append(version);
-		stringBuffer.append(",");
-		stringBuffer.append("]");
+		StringBuffer str = new StringBuffer("Task [");
+		str.append(",id=");
+		str.append(id);
+		str.append(",desc=");
+		str.append(desc);
+		str.append(",url=");
+		str.append(url);
+		str.append(",sec=");
+		str.append(sec);
+		str.append(",lastStatus=");
+		str.append(lastStatus);
+		str.append(",isRun=");
+		str.append(isRun);
+		str.append(",runTime=");
+		str.append(runTime);
+		str.append(",errorSize=");
+		str.append(errorSize);
+		str.append(",emailSize=");
+		str.append(emailSize);
+		str.append(",emailAddress=");
+		str.append(emailAddress);
+		str.append(",createdBy=");
+		str.append(createdBy);
+		str.append(",createdTime=");
+		str.append(createdTime);
+		str.append(",updatedBy=");
+		str.append(updatedBy);
+		str.append(",updatedTime=");
+		str.append(updatedTime);
+		str.append(",deleted=");
+		str.append(deleted);
+		str.append(",version=");
+		str.append(version);
+		str.append("]");
 	
-		return stringBuffer.toString();
+		return str.toString();
 	}
 }

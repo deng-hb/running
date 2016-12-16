@@ -7,12 +7,15 @@ import com.denghb.dbhelper.annotation.Table;
 /**
  * 任务纪录
  * DDL
- * <pre>CREATE TABLE `history` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `task_id` int(11) DEFAULT NULL,
+ * 
+ <pre>
+CREATE TABLE `history` (
+  `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT,
+  `task_id` bigint(11) DEFAULT NULL,
   `task_url` varchar(200) DEFAULT NULL COMMENT '任务地址',
-  `response_code` int(11) DEFAULT NULL COMMENT '返回状态码',
-  `response_text` varchar(5000) DEFAULT NULL COMMENT '返回字符（最多5000）',
+  `code` int(11) DEFAULT NULL COMMENT '返回状态码',
+  `response_brief` varchar(100) DEFAULT NULL COMMENT '返回缩略信息',
+  `response` text COMMENT '返回字符（最多5000）',
   `start_time` datetime DEFAULT NULL COMMENT '开始时间',
   `end_time` datetime DEFAULT NULL COMMENT '结束时间',
   `created_by` int(11) NOT NULL COMMENT '创建人',
@@ -23,9 +26,10 @@ import com.denghb.dbhelper.annotation.Table;
   `version` int(11) NOT NULL DEFAULT '1' COMMENT '版本',
   PRIMARY KEY (`id`),
   KEY `idx_deleted` (`deleted`)
-) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8 COMMENT='任务纪录'<pre>
+) ENGINE=InnoDB AUTO_INCREMENT=164 DEFAULT CHARSET=utf8 COMMENT='任务纪录'
+ <pre>
  * @author DbHelper
- * @generateTime Thu Dec 15 23:11:35 CST 2016
+ * @generateTime Fri Dec 16 20:35:09 CST 2016
  */
 @Table(name="history",database="running")
 public class History implements java.io.Serializable {
@@ -34,23 +38,27 @@ public class History implements java.io.Serializable {
 	
 	/**  */
 	@Id@Column(name="id")
-	private Integer id;
+	private Long id;
 	
 	/**  */
 	@Column(name="task_id")
-	private Integer taskId;
+	private Long taskId;
 	
 	/** 任务地址 */
 	@Column(name="task_url")
 	private String taskUrl;
 	
 	/** 返回状态码 */
-	@Column(name="response_code")
-	private Integer responseCode;
+	@Column(name="code")
+	private Integer code;
+	
+	/** 返回缩略信息 */
+	@Column(name="response_brief")
+	private String responseBrief;
 	
 	/** 返回字符（最多5000） */
-	@Column(name="response_text")
-	private String responseText;
+	@Column(name="response")
+	private String response;
 	
 	/** 开始时间 */
 	@Column(name="start_time")
@@ -85,19 +93,19 @@ public class History implements java.io.Serializable {
 	private Integer version;
 	
 
-	public Integer getId(){
+	public Long getId(){
 		return id;
 	}
 
-	public void setId(Integer id){
+	public void setId(Long id){
 		this.id = id;
 	}
 
-	public Integer getTaskId(){
+	public Long getTaskId(){
 		return taskId;
 	}
 
-	public void setTaskId(Integer taskId){
+	public void setTaskId(Long taskId){
 		this.taskId = taskId;
 	}
 
@@ -109,20 +117,28 @@ public class History implements java.io.Serializable {
 		this.taskUrl = taskUrl;
 	}
 
-	public Integer getResponseCode(){
-		return responseCode;
+	public Integer getCode(){
+		return code;
 	}
 
-	public void setResponseCode(Integer responseCode){
-		this.responseCode = responseCode;
+	public void setCode(Integer code){
+		this.code = code;
 	}
 
-	public String getResponseText(){
-		return responseText;
+	public String getResponseBrief(){
+		return responseBrief;
 	}
 
-	public void setResponseText(String responseText){
-		this.responseText = responseText;
+	public void setResponseBrief(String responseBrief){
+		this.responseBrief = responseBrief;
+	}
+
+	public String getResponse(){
+		return response;
+	}
+
+	public void setResponse(String response){
+		this.response = response;
 	}
 
 	public java.util.Date getStartTime(){
@@ -191,48 +207,37 @@ public class History implements java.io.Serializable {
 
 	@Override
 	public String toString(){
-		StringBuffer stringBuffer = new StringBuffer("History [");
-		stringBuffer.append("id=");
-		stringBuffer.append(id);
-		stringBuffer.append(",");
-		stringBuffer.append("taskId=");
-		stringBuffer.append(taskId);
-		stringBuffer.append(",");
-		stringBuffer.append("taskUrl=");
-		stringBuffer.append(taskUrl);
-		stringBuffer.append(",");
-		stringBuffer.append("responseCode=");
-		stringBuffer.append(responseCode);
-		stringBuffer.append(",");
-		stringBuffer.append("responseText=");
-		stringBuffer.append(responseText);
-		stringBuffer.append(",");
-		stringBuffer.append("startTime=");
-		stringBuffer.append(startTime);
-		stringBuffer.append(",");
-		stringBuffer.append("endTime=");
-		stringBuffer.append(endTime);
-		stringBuffer.append(",");
-		stringBuffer.append("createdBy=");
-		stringBuffer.append(createdBy);
-		stringBuffer.append(",");
-		stringBuffer.append("createdTime=");
-		stringBuffer.append(createdTime);
-		stringBuffer.append(",");
-		stringBuffer.append("updatedBy=");
-		stringBuffer.append(updatedBy);
-		stringBuffer.append(",");
-		stringBuffer.append("updatedTime=");
-		stringBuffer.append(updatedTime);
-		stringBuffer.append(",");
-		stringBuffer.append("deleted=");
-		stringBuffer.append(deleted);
-		stringBuffer.append(",");
-		stringBuffer.append("version=");
-		stringBuffer.append(version);
-		stringBuffer.append(",");
-		stringBuffer.append("]");
+		StringBuffer str = new StringBuffer("History [");
+		str.append(",id=");
+		str.append(id);
+		str.append(",taskId=");
+		str.append(taskId);
+		str.append(",taskUrl=");
+		str.append(taskUrl);
+		str.append(",code=");
+		str.append(code);
+		str.append(",responseBrief=");
+		str.append(responseBrief);
+		str.append(",response=");
+		str.append(response);
+		str.append(",startTime=");
+		str.append(startTime);
+		str.append(",endTime=");
+		str.append(endTime);
+		str.append(",createdBy=");
+		str.append(createdBy);
+		str.append(",createdTime=");
+		str.append(createdTime);
+		str.append(",updatedBy=");
+		str.append(updatedBy);
+		str.append(",updatedTime=");
+		str.append(updatedTime);
+		str.append(",deleted=");
+		str.append(deleted);
+		str.append(",version=");
+		str.append(version);
+		str.append("]");
 	
-		return stringBuffer.toString();
+		return str.toString();
 	}
 }

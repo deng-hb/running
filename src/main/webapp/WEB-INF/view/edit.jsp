@@ -5,6 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>${null==task.desc?'add task':task.desc}</title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <link rel="shortcut icon" href="https://denghb.com/usr/themes/default/img/favicon.ico" />
   <link rel="stylesheet" type="text/css" href="/assets/iconfont/iconfont.css" />
   <link rel='stylesheet' href='/assets/css/style.css' type='text/css'/>
   <style>
@@ -23,11 +24,14 @@
     }
     .field{
         border: 1px solid #b6b6b6;
-        min-width:280px;
+        min-width:300px;
         height:30px;
         padding-left:3px;
         font-size:16px;
     }
+    .field-small{
+            min-width:100px;
+        }
     .button {
         border: 1px solid #b6b6b6;
         background:#f9f9f9;
@@ -37,9 +41,7 @@
   </style>
 </head>
 <body>
-    <div class="header">
-        <a href="/">Health Listener</a>
-    </div>
+    <%@ include file="/WEB-INF/view/_header.jsp" %>
     <form id="form" action="/save" method="POST">
         <input type="hidden" name="id" value="${task.id}" />
         <table>
@@ -57,17 +59,14 @@
             </tr>
             <tr>
                 <td align="right">Sec：</td>
-                <td><input class="field" type="number" name="sec" value="${task.sec}"/></td>
+                <td><input class="field field-small" type="number" name="sec" value="${task.sec}"/></td>
             </tr>
             <tr>
-                <td align="right">is Email：</td>
-                <td>
-                <input type="radio" name="isEmail" value="1"  ${task.isEmail==1?'checked':''}/>Y
-                <input type="radio" name="isEmail" value="0"  ${task.isEmail!=1?'checked':''}/>N
-                </td>
+                <td align="right">Email Size：</td>
+                <td><input class="field field-small" type="number" name="emailSize" value="${task.emailSize}"/></td>
             </tr>
             <tr>
-                <td align="right">Email(,)：</td>
+                <td align="right">Email Address(,)：</td>
                 <td><input class="field" type="text" name="emailAddress" value="${task.emailAddress}"/></td>
             </tr>
             <tr>
@@ -92,6 +91,7 @@
     <script>
         function submit(){
             document.getElementById("form").submit();
+
         }
     </script>
 </body>

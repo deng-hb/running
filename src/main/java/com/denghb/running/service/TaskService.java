@@ -14,5 +14,5 @@ public interface TaskService {
 
     void update(Task task);
 
-    Task query(int id);
+    Task query(long id);
 }

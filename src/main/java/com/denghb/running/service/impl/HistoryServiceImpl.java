@@ -18,6 +18,11 @@ public class HistoryServiceImpl implements HistoryService {
     private DbHelper dbHelper;
 
     @Override
+    public History query(long id) {
+        return dbHelper.queryById(History.class, id);
+    }
+
+    @Override
     public void create(History history) {
         dbHelper.insert(history);
     }

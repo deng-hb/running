@@ -5,9 +5,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Dashboard</title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <link rel="stylesheet" type="text/css" href="/assets/iconfont/iconfont.css" />
   <link rel="shortcut icon" href="https://denghb.com/usr/themes/default/img/favicon.ico" />
-  <link rel='stylesheet' href='/assets/css/style.css?v=4' type='text/css'/>
+  <link rel="stylesheet" type="text/css" href="/assets/iconfont/iconfont.css" />
+  <link rel='stylesheet' href='/assets/css/style.css' type='text/css'/>
   <style>
       table{
           border-collapse: collapse;
@@ -33,22 +33,14 @@
         color:#333;
         text-decoration:none;
       }
-      .action{
-          float:right;
-          font-size:15px;
-          margin-right:10px;
-      }
       .stop a{
         text-decoration:line-through;
       }
   </style>
 </head>
 <body>
-    <div class="header">
-        <a href="/">Health Listener</a>
+    <%@ include file="/WEB-INF/view/_header.jsp" %>
 
-        <div class="action"><a href="/add"><i class="iconfont icon-add blue"></i>add</a></div>
-    </div>
           <table class="table">
             <tr>
               <th style="width: 5%">#</th>
@@ -61,7 +53,7 @@
             </tr>
             <c:forEach items="${list}" var="task" varStatus="status">
             <tr class="${status.index%2==0?'ood':''}">
-              <td>${status.index+1}.</td>
+              <td>${result.paging.start + status.index}.</td>
               <td>${task.desc}</td>
               <td>${task.sec}s</td>
               <td class="${1 == task.isRun?'':'stop'}"><a href="${task.url}" target="_blank">${task.url}</a></td>
@@ -88,11 +80,13 @@
             if(confirm("stop it ？")){
                 window.location.href = '/stop/'+id;
             }
+			return false;
         }
         function start(id){
             if(confirm("start it ？")){
                 window.location.href = '/start/'+id;
             }
+			return false;
         }
         setTimeout(function(){
             //window.location.href = '/';

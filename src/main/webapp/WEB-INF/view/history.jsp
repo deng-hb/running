@@ -5,51 +5,62 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Dashboard</title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <link rel="shortcut icon" href="https://denghb.com/usr/themes/default/img/favicon.ico" />
+  <link rel="stylesheet" type="text/css" href="/assets/iconfont/iconfont.css" />
   <link rel='stylesheet' href='/assets/css/style.css' type='text/css'/>
+  <style>
+        table{
+            border-collapse: collapse;
+            border-spacing: 0;
+            width:100%;
+        }
+        table th{
+            background:#d5d5d5;
+            text-align:left;
+            height:50px;
+            font-size:30px;
+        }
+        table tr{
+            height:40px;
+        }
+        table td{
+            border-bottom:1px #d5d5d5 solid;
+        }
+        .ood{
+          background:#efefef;
+        }
+        td a{
+          color:#333;
+          text-decoration:none;
+        }
+    </style>
 </head>
 <body>
-          <table class="table">
-            <tr>
-              <th style="width: 20px">#</th>
-              <th>Task</th>
-              <th>Sec</th>
-              <th>URL</th>
-              <th>Error</th>
-              <th>Control</th>
-            </tr>
-            <c:forEach items="${list}" var="item" varStatus="status"><c:set var="isRun" value="${1==item.isRun}" />
-            <tr class="${isRun?'success':'warning'}">
-              <td>${status.index+1}.</td>
-              <td>${item.desc}</td>
-              <td>${item.sec}</td>
-              <td>${item.url}</td>
-              <td>${1 == item.isMail?'Y':'N'}</td>
-              <td>
-              <c:choose>
-                  <c:when test="${isRun}">
-                    <a href="#" onclick="stop('${item.id}')" task-id="${item.id}" class='task-stop'>stop</a>
-                  </c:when>
-                  <c:otherwise>
-                    <a href="#" onclick="start('${item.id}')" class='success'>run</a>
-                  </c:otherwise>
-              </c:choose>
-              <a href="#" onclick="/edit/${item.id}" >edit</a>
-              </td>
-            </tr>
-            </c:forEach>
+  <%@ include file="/WEB-INF/view/_header.jsp" %>
+  <table class="table">
+    <tr>
+      <th style="width: 5%">#</th>
+      <th>URL</th>
+      <th>Status</th>
+      <th>Brief</th>
+      <th>Time</th>
+    </tr>
+    <c:forEach items="${result.list}" var="item" varStatus="status">
+    <tr class="${status.index%2==0?'ood':''}">
+      <td>${result.paging.start + status.index}.</td>
+      <td><a href="${item.taskUrl}" target="_blank">${item.taskUrl}</a></td>
+      <td><code class=" ${200 == item.code?'success':'warning'}" >${item.code}</code></td>
+      <td>
+        <a href="/history/err/${item.id}" target="_blank">${item.responseBrief}</a>
+      </td>
+      <td>${item.createdTime}</td>
+    </tr>
+    </c:forEach>
 
-          </table>
-    <script>
-        function stop(id){
-            if(confirm("确认停止？")){
-                window.location.href = '/stop/'+id;
-            }
-        }
-        function start(id){
-            if(confirm("确认启动？")){
-                window.location.href = '/start/'+id;
-            }
-        }
-     </script>
+  </table>
+
+  <div style="height:100px;width:100%;line-height:100px;text-align:center">
+  <%@ include file="/WEB-INF/view/_paginate.jsp" %>
+  </div>
 </body>
 </html>

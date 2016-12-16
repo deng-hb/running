@@ -109,7 +109,7 @@ public class DbHelperImpl implements DbHelper {
             boolean res = 1 == execute(sql.toString(), objects);
             // TODO 成功了获取自动生成的ID
             if (res && null != idField) {
-                Integer id = queryForObject("SELECT LAST_INSERT_ID() as id", Integer.class);
+                Long id = queryForObject("SELECT LAST_INSERT_ID() as id", Long.class);
                 idField.setAccessible(true);
                 idField.set(object, id);
             }
@@ -249,9 +249,6 @@ public class DbHelperImpl implements DbHelper {
         }
         // 不分页 end
 
-        // start
-        long page = paging.getPage() - 1;
-
         // 排序
         if (paging.isSort()) {
             // 判断是否有排序字段
@@ -282,7 +279,7 @@ public class DbHelperImpl implements DbHelper {
         if (0 != rows) {
             // 分页
             sql.append(" limit ");
-            sql.append(page * rows);
+            sql.append(paging.getStart());
             sql.append(",");
             sql.append(rows);
         }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * Created by denghb on 2016/12/14.
@@ -29,12 +30,12 @@ public class HistoryController {
     }
 
     @RequestMapping(value = "/{id}/{page}")
-    public String list(@PathVariable("id") int id, @PathVariable("page") long page, Model model) {
+    public String list(@PathVariable("id") long id, @PathVariable("page") long page, Model model) {
 
         return load(id, page, model);
     }
 
-    private String load(int taskId, long page, Model model) {
+    private String load(long taskId, long page, Model model) {
         Paging paging = new Paging() {
             @Override
             public String[] getSorts() {
@@ -47,8 +48,24 @@ public class HistoryController {
         PagingResult<History> result = historyService.list(paging);
 
         model.addAttribute("result", result);
+        model.addAttribute("pageUrl", "/history/" + taskId);// 分页链接
 
         return "history";
 
+    }
+
+    @RequestMapping(value = "/err/{id}", produces = "text/html;charset=utf-8")
+    @ResponseBody
+    public String err(@PathVariable long id) {
+        History history = historyService.query(id);
+        if (null != history) {
+            String content = history.getResponse();
+            if(0 > content.indexOf("<html")){
+                // 不是网页
+                content = String.format("<pre>%s</pre>",content);
+            }
+            return content;
+        }
+        return "error";
     }
 }

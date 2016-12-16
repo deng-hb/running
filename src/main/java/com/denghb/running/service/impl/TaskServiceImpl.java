@@ -35,7 +35,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task query(int id) {
+    public Task query(long id) {
         return dbHelper.queryById(Task.class, id);
     }
 }

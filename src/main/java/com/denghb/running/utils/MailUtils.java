@@ -20,36 +20,43 @@ public class MailUtils {
     public static void send(final String sendToEmail, final String subject, final String content) {
         // 执行线程
         ExecutorService service = Executors.newFixedThreadPool(2);
-        service.execute(new Runnable() {
+        service.submit(new Runnable() {
 
             @Override
             public void run() {
-                Properties p = new Properties();
-                // 开启debug调试
-                p.setProperty("mail.debug", "true");
-                // 发送服务器需要身份验证
-                p.setProperty("mail.smtp.auth", "true");
-                // 设置邮件服务器主机名
-                p.setProperty("mail.host", "smtp.exmail.qq.com");
-                // 发送邮件协议名称
-                p.setProperty("mail.transport.protocol", "smtp");
-
-                // 设置环境信息
-                Session session = Session.getInstance(p);
-
-                // 创建邮件对象
-                Message msg = new MimeMessage(session);
-
                 try {
+                    Properties p = new Properties();
+                    // 开启debug调试
+                    p.setProperty("mail.debug", "true");
+                    // 发送服务器需要身份验证
+                    p.setProperty("mail.smtp.auth", "true");
+
+                    String host = PropUtils.getValue("mail.host");
+                    String protocol = PropUtils.getValue("mail.transport.protocol");
+                    // 设置邮件服务器主机名
+                    p.setProperty("mail.host", host);
+                    // 发送邮件协议名称
+                    p.setProperty("mail.transport.protocol", protocol);
+
+                    // 设置环境信息
+                    Session session = Session.getInstance(p);
+
+                    // 创建邮件对象
+                    Message msg = new MimeMessage(session);
+
                     msg.setSubject(subject);
                     // 设置邮件内容
                     msg.setContent(content, "text/html;charset=UTF-8");
+
+                    String username = PropUtils.getValue("mail.username");
+                    String passwrod = PropUtils.getValue("mail.password");
+
                     // 设置发件人
-                    msg.setFrom(new InternetAddress("test@denghb.com"));
+                    msg.setFrom(new InternetAddress(username));
 
                     Transport transport = session.getTransport();
                     // 连接邮件服务器
-                    transport.connect("test@denghb.com", "Test20");
+                    transport.connect(username, passwrod);
                     // 发送邮件到指定邮箱
                     transport.sendMessage(msg, new Address[]{new InternetAddress(sendToEmail)});
                     // 关闭连接
