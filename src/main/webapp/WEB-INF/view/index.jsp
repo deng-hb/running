@@ -41,40 +41,42 @@
 <body>
     <%@ include file="/WEB-INF/view/_header.jsp" %>
 
-          <table class="table">
-            <tr>
-              <th style="width: 5%">#</th>
-              <th>Desc</th>
-              <th>Sec</th>
-              <th style="width: 40%">URL</th>
-              <th style="width: 15%;">Run Time</th>
-              <th style="width: 8%">Status</th>
-              <th style="width: 15%">Control</th>
-            </tr>
-            <c:forEach items="${list}" var="task" varStatus="status">
-            <tr class="${status.index%2==0?'ood':''}">
-              <td>${result.paging.start + status.index}.</td>
-              <td>${task.desc}</td>
-              <td>${task.sec}s</td>
-              <td class="${1 == task.isRun?'':'stop'}"><a href="${task.url}" target="_blank">${task.url}</a></td>
-              <td><code class=" ${1000 < task.runTime?'red':'green'}" >${task.runTime}ms</code></td>
-              <td><code class=" ${200 == task.lastStatus?'success':'warning'}" >${task.lastStatus}</code></td>
-              <td>
-              <c:choose>
-                  <c:when test="${1 == task.isRun}">
-                    <a href="#" onclick="stop('${task.id}')" class="" title="stop"><i class="iconfont icon-stop red"></i>stop</a>
-                  </c:when>
-                  <c:otherwise>
-                    <a href="#" onclick="start('${task.id}')" class="" title="start"><i class="iconfont icon-start green"></i>start</a>
-                  </c:otherwise>
-              </c:choose>
-              <a href="/edit/${task.id}" ><i class="iconfont icon-edit blue"></i>edit</a>
-              <a href="/history/${task.id}" ><i class="iconfont icon-history gray"></i>history</a>
-              </td>
-            </tr>
-            </c:forEach>
+      <table class="table">
+        <tr>
+          <th style="width: 5%">#</th>
+          <th style="width: 40%">URL</th>
+          <th style="width: 15%"><a href="/?sortIndex=1${result.paging.desc?1==result.paging.sortIndex?'&desc=false':'':''}">Sec</a></th>
+          <th style="width: 15%"><a href="/?sortIndex=2${result.paging.desc?2==result.paging.sortIndex?'&desc=false':'':''}">Run Time</a></th>
+          <th style="width: 10%"><a href="/?sortIndex=3${result.paging.desc?3==result.paging.sortIndex?'&desc=false':'':''}">Last Status</a></th>
+          <th style="width: 15%"><a href="/?sortIndex=4${result.paging.desc?4==result.paging.sortIndex?'&desc=false':'':''}">Control</a></th>
+        </tr>
+        <c:forEach items="${result.list}" var="task" varStatus="status">
+        <tr class="${status.index%2==0?'ood':''}">
+          <td>${result.paging.start + status.index + 1}.</td>
+          <td class="${1 == task.isRun?'':'stop'}"><a href="${task.url}" target="_blank">${task.desc}</a></td>
+          <td>${task.sec}s</td>
+          <td><code class=" ${1000 < task.runTime?'red':'green'}" >${task.runTime}ms</code></td>
+          <td><code class=" ${200 == task.lastStatus?'success':'warning'}" >${task.lastStatus}</code></td>
+          <td>
+          <c:choose>
+              <c:when test="${1 == task.isRun}">
+                <a href="#" onclick="stop('${task.id}')" class="" title="stop"><i class="iconfont icon-stop red"></i>stop</a>
+              </c:when>
+              <c:otherwise>
+                <a href="#" onclick="start('${task.id}')" class="" title="start"><i class="iconfont icon-start green"></i>start</a>
+              </c:otherwise>
+          </c:choose>
+          <a href="/edit/${task.id}" ><i class="iconfont icon-edit blue"></i>edit</a>
+          <a href="/history/${task.id}" ><i class="iconfont icon-history gray"></i>history</a>
+          </td>
+        </tr>
+        </c:forEach>
 
-          </table>
+      </table>
+
+    <div style="height:100px;width:100%;line-height:100px;text-align:center">
+    <%@ include file="/WEB-INF/view/_paginate.jsp" %>
+    </div>
     <script>
         function stop(id){
             if(confirm("stop it ？")){

@@ -1,7 +1,9 @@
 package com.denghb.running.controller;
 
 
+import com.denghb.dbhelper.paging.PagingResult;
 import com.denghb.running.HttpConnectionTask;
+import com.denghb.running.criteria.TaskCriteria;
 import com.denghb.running.domain.Task;
 import com.denghb.running.service.TaskService;
 import com.denghb.running.utils.TaskUtils;
@@ -13,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -30,9 +33,34 @@ public class ManagerController {
     private TaskService taskService;
 
     @RequestMapping(value = "/")
-    public String index(Model model) {
-        List<Task> list = taskService.list();
-        model.addAttribute("list", list);
+    public String index(Model model, @RequestParam(required = false, defaultValue = "0") int sortIndex,
+                        @RequestParam(required = false, defaultValue = "true") Boolean desc) {
+
+        return load(model, 1, sortIndex, desc);
+    }
+
+    @RequestMapping(value = "/{page}")
+    public String index(Model model, @PathVariable("page") long page,
+                        @RequestParam(required = false, defaultValue = "0") int sortIndex,
+                        @RequestParam(required = false, defaultValue = "true") Boolean desc) {
+
+        return load(model, page, sortIndex, desc);
+    }
+
+    private String load(Model model, long page, int sortIndex, boolean desc) {
+        TaskCriteria criteria = new TaskCriteria();
+        criteria.setSortIndex(sortIndex);
+        criteria.setPage(page);
+        criteria.setDesc(desc);
+
+        PagingResult<Task> result = taskService.list(criteria);
+        model.addAttribute("result", result);
+
+        // 分页参数 中文自己decode
+        if (0 != sortIndex) {
+            model.addAttribute("urlParas", "?sortIndex=" + sortIndex + "&desc=" + String.valueOf(desc));
+        }
+
         return "index";
     }
 
@@ -94,15 +122,15 @@ public class ManagerController {
                 model.addAttribute("message", "CREATE SUCCESS");
             }
             // 运行
-            if(1 == task.getIsRun()){
+            if (1 == task.getIsRun()) {
                 startTask(task);
-            }else{
+            } else {
                 TaskUtils.stop(String.valueOf(task.getId()));
             }
         } catch (Exception e) {
             log.error("ERROR", e);
         }
-        return "redirect:/edit/"+task.getId();
+        return "redirect:/edit/" + task.getId();
     }
 
     @PostConstruct

@@ -51,15 +51,15 @@
             </tr>
             <tr>
                 <td align="right">desc：</td>
-                <td><input class="field" type="text" name="desc" value="${task.desc}"/></td>
+                <td><input class="field" id="desc" type="text" name="desc" value="${task.desc}"/></td>
             </tr>
             <tr>
                 <td align="right">Url：</td>
-                <td><input class="field" type="text" name="url" value="${task.url}"/></td>
+                <td><input class="field" id="url" type="text" name="url" value="${null==task.url?'http://':task.url}"/></td>
             </tr>
             <tr>
                 <td align="right">Sec：</td>
-                <td><input class="field field-small" type="number" name="sec" value="${task.sec}"/></td>
+                <td><input class="field field-small" id="sec" type="number" name="sec" value="${null == task.sec?60:task.sec}"/></td>
             </tr>
             <tr>
                 <td align="right">Email Size：</td>
@@ -79,9 +79,8 @@
             <tr>
                 <td>&nbsp;</td>
                 <td>
-                <a class="button" href="#" onclick="submit()"><i class="iconfont icon-save blue"></i> save</a>
-
-                <a href="/">back</a>
+                    <a class="button" href="#" onclick="submit()"><i class="iconfont icon-save blue"></i> save</a>
+                    <a href="/">back</a>
                 </td>
             </tr>
         </table>
@@ -89,9 +88,23 @@
     </form>
 
     <script>
+        var el = function(id){
+            return document.getElementById(id);
+        }
         function submit(){
-            document.getElementById("form").submit();
-
+            if('' == el('desc').value.trim()){
+                el('desc').focus();
+                return false;
+            }
+            if('' == el('url').value.trim()){
+                el('url').focus();
+                return false;
+            }
+            if('' == el('sec').value.trim()){
+                el('sec').focus();
+                return false;
+            }
+            el('form').submit();
         }
     </script>
 </body>

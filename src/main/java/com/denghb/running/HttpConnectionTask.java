@@ -100,9 +100,24 @@ public class HttpConnectionTask extends TimerTask {
                         content = String.format("<pre>%s</pre>");
                     }
 
-                    // 发邮件
-                    MailUtils.send(task.getEmailAddress(), String.format("[Running](%s)>%s", code, task.getDesc()), content);
-                    task.setEmailSize(task.getEmailSize() - 1);
+                    String email = task.getEmailAddress();
+                    if (null != email){
+
+                        // 多个地址
+                        if(0 < email.indexOf(",")){
+                            String[] emails = email.split(",");
+                            for(int j = 0;j< emails.length;j++){
+                                if(null != emails[j]){
+                                    // 发邮件纪录？
+                                    MailUtils.send(emails[j], String.format("[Running](%s)>%s", code, task.getDesc()), content);
+                                }
+                            }
+                        }else {
+                            // 发邮件纪录？
+                            MailUtils.send(task.getEmailAddress(), String.format("[Running](%s)>%s", code, task.getDesc()), content);
+                        }
+                        task.setEmailSize(task.getEmailSize() - 1);
+                    }
                 }
             }
 

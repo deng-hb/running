@@ -9,8 +9,9 @@
 <c:if test="${urlParas == null}">
 	<c:set var="urlParas" value="" />
 </c:if>
-<%-- 1..3,4,5..7 --%>
-<c:if test="${(totalPage > 0) && (currentPage <= totalPage)}">
+<%-- 上一页 1..3,4,5..7 下一页 --%>
+<c:choose>
+<c:when test="${(totalPage > 1) && (currentPage <= totalPage)}">
 	<c:set var="startPage" value="${currentPage - 1}" />
 	<c:if test="${startPage < 1}" >
 		<c:set var="startPage" value="1" />
@@ -72,4 +73,11 @@
 			</c:otherwise>
 		</c:choose>
 	</div>
-</c:if>
+</c:when>
+<c:otherwise>
+    <c:if test="${0 == result.paging.total}" >
+        <%-- 没有记录 --%>
+        Sorry,Not found...
+    </c:if>
+</c:otherwise>
+</c:choose>

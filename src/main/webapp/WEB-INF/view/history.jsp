@@ -47,7 +47,7 @@
     </tr>
     <c:forEach items="${result.list}" var="item" varStatus="status">
     <tr class="${status.index%2==0?'ood':''}">
-      <td>${result.paging.start + status.index}.</td>
+      <td>${result.paging.start + status.index + 1}.</td>
       <td><a href="${item.taskUrl}" target="_blank">${item.taskUrl}</a></td>
       <td><code class=" ${200 == item.code?'success':'warning'}" >${item.code}</code></td>
       <td>
