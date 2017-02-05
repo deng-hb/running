@@ -26,10 +26,10 @@ CREATE TABLE `history` (
   `version` int(11) NOT NULL DEFAULT '1' COMMENT '版本',
   PRIMARY KEY (`id`),
   KEY `idx_deleted` (`deleted`)
-) ENGINE=InnoDB AUTO_INCREMENT=164 DEFAULT CHARSET=utf8 COMMENT='任务纪录'
+) ENGINE=InnoDB AUTO_INCREMENT=203 DEFAULT CHARSET=utf8 COMMENT='任务纪录'
  <pre>
  * @author DbHelper
- * @generateTime Fri Dec 16 20:35:09 CST 2016
+ * @generateTime Sun Feb 05 14:38:05 CST 2017
  */
 @Table(name="history",database="running")
 public class History implements java.io.Serializable {

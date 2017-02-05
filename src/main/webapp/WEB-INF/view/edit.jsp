@@ -77,6 +77,18 @@
                 </td>
             </tr>
             <tr>
+                <td align="right">Restart Shell：</td>
+                <td>
+                    <textarea class="field"  name="restartShell">${task.restartShell}</textarea>
+                </td>
+            </tr>
+            <tr>
+                <td align="right">log Shell：</td>
+                <td>
+                    <textarea class="field" name="logShell" >${task.logShell}</textarea>
+                </td>
+            </tr>
+            <tr>
                 <td>&nbsp;</td>
                 <td>
                     <a class="button" href="#" onclick="submit()"><i class="iconfont icon-save blue"></i> save</a>

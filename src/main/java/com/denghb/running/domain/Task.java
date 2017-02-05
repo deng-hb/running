@@ -20,6 +20,8 @@ CREATE TABLE `task` (
   `error_size` int(11) NOT NULL DEFAULT '200' COMMENT '错误次数',
   `email_size` int(11) DEFAULT '0' COMMENT '发邮件次数，0>=不发',
   `email_address` varchar(200) DEFAULT NULL COMMENT '邮件地址多个,隔开',
+  `restart_shell` varchar(200) DEFAULT NULL COMMENT '重启脚本',
+  `log_shell` varchar(200) DEFAULT NULL COMMENT '查看日志脚本',
   `created_by` int(11) NOT NULL DEFAULT '0' COMMENT '创建人',
   `created_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_by` int(11) DEFAULT NULL COMMENT '更新人',
@@ -28,10 +30,10 @@ CREATE TABLE `task` (
   `version` int(11) NOT NULL DEFAULT '1' COMMENT '版本',
   PRIMARY KEY (`id`),
   KEY `idx_deleted` (`deleted`)
-) ENGINE=InnoDB AUTO_INCREMENT=1314 DEFAULT CHARSET=utf8 COMMENT='任务'
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='任务'
  <pre>
  * @author DbHelper
- * @generateTime Fri Dec 16 20:35:09 CST 2016
+ * @generateTime Sun Feb 05 14:38:05 CST 2017
  */
 @Table(name="task",database="running")
 public class Task implements java.io.Serializable {
@@ -77,6 +79,14 @@ public class Task implements java.io.Serializable {
 	/** 邮件地址多个,隔开 */
 	@Column(name="email_address")
 	private String emailAddress;
+	
+	/** 重启脚本 */
+	@Column(name="restart_shell")
+	private String restartShell;
+	
+	/** 查看日志脚本 */
+	@Column(name="log_shell")
+	private String logShell;
 	
 	/** 创建人 */
 	@Column(name="created_by")
@@ -183,6 +193,22 @@ public class Task implements java.io.Serializable {
 		this.emailAddress = emailAddress;
 	}
 
+	public String getRestartShell(){
+		return restartShell;
+	}
+
+	public void setRestartShell(String restartShell){
+		this.restartShell = restartShell;
+	}
+
+	public String getLogShell(){
+		return logShell;
+	}
+
+	public void setLogShell(String logShell){
+		this.logShell = logShell;
+	}
+
 	public Integer getCreatedBy(){
 		return createdBy;
 	}
@@ -254,6 +280,10 @@ public class Task implements java.io.Serializable {
 		str.append(emailSize);
 		str.append(",emailAddress=");
 		str.append(emailAddress);
+		str.append(",restartShell=");
+		str.append(restartShell);
+		str.append(",logShell=");
+		str.append(logShell);
 		str.append(",createdBy=");
 		str.append(createdBy);
 		str.append(",createdTime=");

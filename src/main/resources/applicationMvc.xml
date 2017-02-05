@@ -1,46 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
-	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
-	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:task="http://www.springframework.org/schema/task" xmlns:cache="http://www.springframework.org/schema/cache"
-	xmlns:p="http://www.springframework.org/schema/p" xmlns:c="http://www.springframework.org/schema/c"
-	xmlns:mvc="http://www.springframework.org/schema/mvc"
-	xsi:schemaLocation="
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:websocket="http://www.springframework.org/schema/websocket"
+       xsi:schemaLocation="
      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
-     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
-     http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
-     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
-     http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
-     http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd
-     http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+     http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+	 http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket.xsd">
 
-	<context:component-scan base-package="com.denghb.**.controller" />
-	<mvc:annotation-driven />
+    <context:component-scan base-package="com.denghb.**.controller"/>
 
-	<!-- 配置静态资源，直接映射到对应的文件夹 -->
-	<mvc:resources mapping="/assets/**" location="/assets/" />
+    <mvc:annotation-driven/>
 
-	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="prefix" value="/WEB-INF/view/"></property>
-		<property name="suffix" value=".jsp"></property>
-	</bean>
+    <!-- 配置静态资源，直接映射到对应的文件夹 -->
+    <mvc:resources mapping="/assets/**" location="/assets/"/>
 
-	<!-- 返回Gson -->
-	<bean id="gsonBuilder" class="com.google.gson.GsonBuilder">
-		<property name="dateFormat" value="yyyy-MM-dd HH:mm:ss" />
-	</bean>
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/view/"></property>
+        <property name="suffix" value=".jsp"></property>
+    </bean>
 
-	<bean id="gb" class="com.google.gson.Gson" factory-bean="gsonBuilder" factory-method="create" />
+    <!-- 返回Gson -->
+    <bean id="gsonBuilder" class="com.google.gson.GsonBuilder">
+        <property name="dateFormat" value="yyyy-MM-dd HH:mm:ss"/>
+    </bean>
 
-	<mvc:annotation-driven>
-		<mvc:message-converters register-defaults="true">
-			<bean class="org.springframework.http.converter.json.GsonHttpMessageConverter">
-				<property name="gson" ref="gb" />
-			</bean>
-		</mvc:message-converters>
-	</mvc:annotation-driven>
+    <bean id="gb" class="com.google.gson.Gson" factory-bean="gsonBuilder" factory-method="create"/>
+
+    <mvc:annotation-driven>
+        <mvc:message-converters register-defaults="true">
+            <bean class="org.springframework.http.converter.json.GsonHttpMessageConverter">
+                <property name="gson" ref="gb"/>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <websocket:message-broker application-destination-prefix="/app">
+        <websocket:stomp-endpoint path="/ws">
+            <websocket:sockjs/>
+        </websocket:stomp-endpoint>
+        <websocket:simple-broker prefix="/topic"/>
+    </websocket:message-broker>
 
 </beans> 

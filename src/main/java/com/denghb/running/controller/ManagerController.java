@@ -6,7 +6,7 @@ import com.denghb.running.HttpConnectionTask;
 import com.denghb.running.criteria.TaskCriteria;
 import com.denghb.running.domain.Task;
 import com.denghb.running.service.TaskService;
-import com.denghb.running.utils.TaskUtils;
+import com.denghb.utils.TaskUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
