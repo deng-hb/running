@@ -7,6 +7,11 @@
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <link rel="shortcut icon" href="https://denghb.com/usr/themes/default/img/favicon.ico" />
   <link rel='stylesheet' href='/assets/css/style.css' type='text/css'/>
+  <style>
+    p{
+        padding:0 10px;
+    }
+  </style>
   <script src="/assets/js/sockjs.js"></script>
   <script src="/assets/js/stomp.js"></script>
 
@@ -24,7 +29,7 @@
             p.innerHTML = frame.body;
             document.body.appendChild(p)
             // console.log(frame);
-            document.body.scrollTop = document.body.scrollHeight;// 滚动到底部
+            //document.body.scrollTop = document.body.scrollHeight;// 滚动到底部
         });
         stompClient.send("/app/${exec}", {}, ${id});
     }, function (error) {

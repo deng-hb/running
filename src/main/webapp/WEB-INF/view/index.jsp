@@ -68,6 +68,8 @@
           </c:choose>
           <a href="/edit/${task.id}" ><i class="iconfont icon-edit blue"></i>edit</a>
           <a href="/history/${task.id}" ><i class="iconfont icon-history gray"></i>history</a>
+          <a href="#" onclick="restart('${task.id}')" ><i class="iconfont icon-setting red"></i>restart</a>
+          <a href="/console/log/${task.id}" ><i class="iconfont icon-setting gray"></i>log</a>
           </td>
         </tr>
         </c:forEach>
@@ -89,6 +91,12 @@
                 window.location.href = '/start/'+id;
             }
 			return false;
+        }
+        function restart(id){
+            if(confirm("restart it ？")){
+                window.location.href = '/console/restart/'+id;
+            }
+            return false;
         }
         setTimeout(function(){
             //window.location.href = '/';

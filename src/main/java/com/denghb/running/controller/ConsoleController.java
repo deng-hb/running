@@ -57,11 +57,10 @@ public class ConsoleController {
         }
 
         Task task = taskService.query(id);
-        String sh = task.getRestartShell();
-        if (StringUtils.hasText(sh)) {
+        if (null != task && StringUtils.hasText(task.getRestartShell())) {
 
             shell = new Shell();
-            BufferedReader bufferedReader = shell.exec(sh);
+            BufferedReader bufferedReader = shell.exec(task.getRestartShell());
             shells.put(key, shell);// 保存
             String line;
             try {
@@ -99,11 +98,10 @@ public class ConsoleController {
 
         //
         Task task = taskService.query(id);
-        String sh = task.getLogShell();
-        if (StringUtils.hasText(sh)) {
+        if (null != task && StringUtils.hasText(task.getLogShell())) {
 
             shell = new Shell();
-            BufferedReader bufferedReader = shell.exec(sh);
+            BufferedReader bufferedReader = shell.exec(task.getLogShell());
             shells.put(key, shell);// 保存
             String line;
             try {
