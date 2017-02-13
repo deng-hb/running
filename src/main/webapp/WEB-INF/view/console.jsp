@@ -26,7 +26,7 @@
         //成功连接后，设定接受服务器的地址和处理方法
         stompClient.subscribe('/topic/${exec}', function (frame) {
             var p = document.createElement('p');
-            p.innerHTML = frame.body;
+            p.innerHTML = frame.body.replace(/</g,"&lt;");
             document.body.appendChild(p)
             // console.log(frame);
             //document.body.scrollTop = document.body.scrollHeight;// 滚动到底部
